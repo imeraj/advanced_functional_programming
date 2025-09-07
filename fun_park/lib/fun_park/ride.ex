@@ -14,4 +14,18 @@ defmodule FunPark.Ride do
       tags: Keyword.get(opts, :tags, [])
     }
   end
+
+  def change(%__MODULE__{} = ride, attrs) when is_map(attrs) do
+    attrs = Map.delete(attrs, :id)
+
+    struct(ride, attrs)
+  end
+
+  defimpl FunPark.Eq, for: FunPark.Ride do
+    alias FunPark.Eq
+    alias FunPark.Ride
+
+    def eq?(%Ride{id: v1}, %Ride{id: v2}), do: Eq.eq?(v1, v2)
+    def not_eq?(%Ride{id: v1}, %Ride{id: v2}), do: Eq.not_eq?(v1, v2)
+  end
 end

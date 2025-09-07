@@ -29,4 +29,18 @@ defmodule FunPark.Patron do
       dislikes: Keyword.get(opts, :dislikes, [])
     }
   end
+
+  def change(%__MODULE__{} = patron, attrs) when is_map(attrs) do
+    attrs = Map.delete(attrs, :id)
+
+    struct(patron, attrs)
+  end
+
+  defimpl FunPark.Eq, for: FunPark.Patron do
+    alias FunPark.Eq
+    alias FunPark.Patron
+
+    def eq?(%Patron{id: v1}, %Patron{id: v2}), do: Eq.eq?(v1, v2)
+    def not_eq?(%Patron{id: v1}, %Patron{id: v2}), do: Eq.not_eq?(v1, v2)
+  end
 end
