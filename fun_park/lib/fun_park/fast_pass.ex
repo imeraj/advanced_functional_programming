@@ -2,6 +2,7 @@ defmodule FunPark.FastPass do
   @moduledoc false
 
   alias FunPark.Ride
+  alias FunPark.Eq
 
   defstruct [:id, ride: nil, time: nil]
 
@@ -17,6 +18,12 @@ defmodule FunPark.FastPass do
     attrs = Map.delete(attrs, :id)
 
     struct(fast_pass, attrs)
+  end
+
+  def get_time(%__MODULE__{time: time}), do: time
+
+  def eq_time do
+    Eq.Utils.contramap(&get_time/1)
   end
 
   defimpl FunPark.Eq, for: FunPark.FastPass do

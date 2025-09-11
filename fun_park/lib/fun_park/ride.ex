@@ -1,7 +1,15 @@
 defmodule FunPark.Ride do
   @moduledoc false
 
-  defstruct [:id, name: "Unknown Ride", min_age: 0, min_height: 0, wait_time: 0, online: true, tags: []]
+  defstruct [
+    :id,
+    name: "Unknown Ride",
+    min_age: 0,
+    min_height: 0,
+    wait_time: 0,
+    online: true,
+    tags: []
+  ]
 
   def new(name, opts \\ []) when is_binary(name) do
     %__MODULE__{
