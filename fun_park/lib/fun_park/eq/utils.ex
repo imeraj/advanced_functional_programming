@@ -1,5 +1,7 @@
 defmodule FunPark.Eq.Utils do
-  @moduledoc false
+  @moduledoc """
+  Utility functions for working with equality data.
+  """
   alias FunPark.Eq
 
   def contramap(f, eq \\ Eq) do

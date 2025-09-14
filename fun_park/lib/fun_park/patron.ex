@@ -43,4 +43,16 @@ defmodule FunPark.Patron do
     def eq?(%Patron{id: v1}, %Patron{id: v2}), do: Eq.eq?(v1, v2)
     def not_eq?(%Patron{id: v1}, %Patron{id: v2}), do: Eq.not_eq?(v1, v2)
   end
+
+  defp tier_priority(:basic), do: 1
+  defp tier_priority(:premium), do: 2
+  defp tier_priority(:vip), do: 3
+  defp tier_priority(_), do: 0
+
+  defp get_ticket_tier_priority(%__MODULE__{ticket_tier: ticket_tier}),
+    do: tier_priority(ticket_tier)
+
+  def order_by_ticket_tier do
+    FunPark.Ord.Utils.contramap(&get_ticket_tier_priority/1)
+  end
 end

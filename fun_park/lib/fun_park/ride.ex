@@ -36,4 +36,14 @@ defmodule FunPark.Ride do
     def eq?(%Ride{id: v1}, %Ride{id: v2}), do: Eq.eq?(v1, v2)
     def not_eq?(%Ride{id: v1}, %Ride{id: v2}), do: Eq.not_eq?(v1, v2)
   end
+
+  defimpl FunPark.Ord, for: FunPark.Ride do
+    alias FunPark.Ord
+    alias FunPark.Ride
+
+    def lt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.lt?(v1, v2)
+    def le?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.le?(v1, v2)
+    def gt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.gt?(v1, v2)
+    def ge?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.ge?(v1, v2)
+  end
 end

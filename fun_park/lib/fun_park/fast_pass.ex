@@ -33,4 +33,14 @@ defmodule FunPark.FastPass do
     def eq?(%FastPass{id: v1}, %FastPass{id: v2}), do: Eq.eq?(v1, v2)
     def not_eq?(%FastPass{id: v1}, %FastPass{id: v2}), do: Eq.not_eq?(v1, v2)
   end
+
+  defimpl FunPark.Ord, for: FunPark.FastPass do
+    alias FunPark.Ord
+    alias FunPark.FastPass
+
+    def lt?(%FastPass{time: v1}, %FastPass{time: v2}), do: Ord.lt?(v1, v2)
+    def le?(%FastPass{time: v1}, %FastPass{time: v2}), do: Ord.le?(v1, v2)
+    def gt?(%FastPass{time: v1}, %FastPass{time: v2}), do: Ord.gt?(v1, v2)
+    def ge?(%FastPass{time: v1}, %FastPass{time: v2}), do: Ord.ge?(v1, v2)
+  end
 end
