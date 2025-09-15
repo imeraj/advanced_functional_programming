@@ -4,6 +4,27 @@ defmodule FunPark.Ord.Utils do
   """
   alias FunPark.Ord
 
+  def to_eq(ord \\ Ord) do
+    %{
+      eq?: fn a, b -> compare(a, b, ord) == :eq end,
+      not_eq?: fn a, b -> compare(a, b, ord) != :eq end
+    }
+  end
+
+  def comparator(ord_module) do
+    fn a, b -> compare(a, b, ord_module) != :gt end
+  end
+
+  def compare(a, b, ord \\ Ord) do
+    ord = to_ord_map(ord)
+
+    cond do
+      ord.lt?.(a, b) -> :lt
+      ord.gt?.(a, b) -> :gt
+      true -> :eq
+    end
+  end
+
   def contramap(f, ord \\ Ord) do
     ord = to_ord_map(ord)
 

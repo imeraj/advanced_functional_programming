@@ -47,4 +47,14 @@ defmodule FunPark.List do
   def superset?(large, small, eq \\ FunPark.Eq) when is_list(small) and is_list(large) do
     subset?(small, large, eq)
   end
+
+  def sort(list, ord \\ FunPark.Ord) when is_list(list) do
+    Enum.sort(list, FunPark.Ord.Utils.comparator(ord))
+  end
+
+  def strict_sort(list, ord \\ FunPark.Ord) when is_list(list) do
+    list
+    |> uniq(FunPark.Ord.Utils.to_eq(ord))
+    |> sort(ord)
+  end
 end
