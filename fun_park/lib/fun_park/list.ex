@@ -57,4 +57,9 @@ defmodule FunPark.List do
     |> uniq(FunPark.Ord.Utils.to_eq(ord))
     |> sort(ord)
   end
+
+  defimpl FunPark.Foldable, for: List do
+    def fold_l(list, acc, func), do: List.foldl(list, acc, func)
+    def fold_r(list, acc, func), do: List.foldr(list, acc, func)
+  end
 end
