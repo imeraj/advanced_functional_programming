@@ -20,10 +20,24 @@ defmodule FunPark.FastPass do
     struct(fast_pass, attrs)
   end
 
-  def get_time(%__MODULE__{time: time}), do: time
+  def eq_ride do
+    Eq.Utils.contramap(&get_ride/1)
+  end
+
+  defp get_ride(%__MODULE__{ride: ride}), do: ride
 
   def eq_time do
     Eq.Utils.contramap(&get_time/1)
+  end
+
+  defp get_time(%__MODULE__{time: time}), do: time
+
+  def eq_ride_and_time do
+    Eq.Utils.concat_all([eq_ride(), eq_time()])
+  end
+
+  def duplicate_pass do
+    Eq.Utils.concat_any([Eq, eq_ride_and_time()])
   end
 
   defimpl FunPark.Eq, for: FunPark.FastPass do
