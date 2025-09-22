@@ -1,6 +1,10 @@
 defmodule FunPark.Patron do
   @moduledoc false
 
+  require FunPark.Macros
+
+  alias FunPark.Ord.Utils
+
   defstruct id: nil,
             name: nil,
             age: 0,
@@ -44,6 +48,8 @@ defmodule FunPark.Patron do
     def not_eq?(%Patron{id: v1}, %Patron{id: v2}), do: Eq.not_eq?(v1, v2)
   end
 
+  FunPark.Macros.ord_for(FunPark.Patron, :name)
+
   defp tier_priority(:basic), do: 1
   defp tier_priority(:premium), do: 2
   defp tier_priority(:vip), do: 3
@@ -53,6 +59,13 @@ defmodule FunPark.Patron do
     do: tier_priority(ticket_tier)
 
   def order_by_ticket_tier do
-    FunPark.Ord.Utils.contramap(&get_ticket_tier_priority/1)
+    Utils.contramap(&get_ticket_tier_priority/1)
+  end
+
+  defp get_reward_points(%__MODULE__{reward_points: reward_points}),
+    do: reward_points
+
+  def ord_by_reward_points do
+    Utils.contramap(&get_reward_points/1)
   end
 end

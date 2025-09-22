@@ -2,7 +2,18 @@ defmodule FunPark.Ord.Utils do
   @moduledoc """
   Utility functions for working with ordered data.
   """
+  import FunPark.Monoid.Utils
+
   alias FunPark.Ord
+  alias FunPark.Monoid
+
+  def append(a, b) do
+    m_append(%Monoid.Ord{}, a, b)
+  end
+
+  def concat(ord_list) when is_list(ord_list) do
+    m_concat(%Monoid.Ord{}, ord_list)
+  end
 
   def to_eq(ord \\ Ord) do
     %{

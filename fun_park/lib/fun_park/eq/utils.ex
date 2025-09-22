@@ -11,7 +11,7 @@ defmodule FunPark.Eq.Utils do
     m_append(%Monoid.Eq.All{}, a, b)
   end
 
-  def concat_all(eq_list)when is_list(eq_list) do
+  def concat_all(eq_list) when is_list(eq_list) do
     m_concat(%Monoid.Eq.All{}, eq_list)
   end
 
@@ -19,7 +19,7 @@ defmodule FunPark.Eq.Utils do
     m_append(%Monoid.Eq.Any{}, a, b)
   end
 
-  def concat_any(eq_list)when is_list(eq_list) do
+  def concat_any(eq_list) when is_list(eq_list) do
     m_concat(%Monoid.Eq.Any{}, eq_list)
   end
 
