@@ -15,6 +15,13 @@ defmodule FunPark.Ord.Utils do
     m_concat(%Monoid.Ord{}, ord_list)
   end
 
+  def max(a, b, ord \\ Ord) do
+    case compare(a, b, ord) do
+      :lt -> b
+      _ -> a
+    end
+  end
+
   def to_eq(ord \\ Ord) do
     %{
       eq?: fn a, b -> compare(a, b, ord) == :eq end,
