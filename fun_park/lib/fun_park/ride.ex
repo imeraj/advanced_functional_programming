@@ -2,6 +2,7 @@ defmodule FunPark.Ride do
   @moduledoc false
 
   require FunPark.Macros
+  import FunPark.Predicate
 
   defstruct [
     :id,
@@ -41,13 +42,10 @@ defmodule FunPark.Ride do
 
   FunPark.Macros.ord_for(FunPark.Ride, :name)
 
-  # defimpl FunPark.Ord, for: FunPark.Ride do
-  #   alias FunPark.Ord
-  #   alias FunPark.Ride
+  def online?(%__MODULE__{online: online}), do: online
 
-  #   def lt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.lt?(v1, v2)
-  #   def le?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.le?(v1, v2)
-  #   def gt?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.gt?(v1, v2)
-  #   def ge?(%Ride{name: v1}, %Ride{name: v2}), do: Ord.ge?(v1, v2)
-  # end
+  def long_wait?(%__MODULE__{wait_time: wait_time}), do: wait_time > 30
+
+  def suggested?(%__MODULE__{} = ride),
+    do: p_all([&online?/1, p_not(&long_wait?/1)]).(ride)
 end
