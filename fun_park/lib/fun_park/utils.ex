@@ -1,7 +1,7 @@
 defmodule FunPark.Utils do
   def curry(fun) when is_function(fun) do
     arity = :erlang.fun_info(fun, :arity) |> elem(1)
-    curry(fun, arity, []) |> IO.inspect()
+    curry(fun, arity, [])
   end
 
   defp curry(fun, 1, args), do: fn last_arg -> apply(fun, args ++ [last_arg]) end

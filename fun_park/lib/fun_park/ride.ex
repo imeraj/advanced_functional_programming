@@ -64,4 +64,8 @@ defmodule FunPark.Ride do
 
   def eligible?(%Patron{} = patron, %__MODULE__{} = ride),
     do: p_all([curry(&tall_enough?/2).(patron), curry(&old_enough?/2).(patron)]).(ride)
+
+  def suggested_rides(%Patron{} = patron, rides) when is_list(rides) do
+    Enum.filter(rides, &suggested?(patron, &1))
+  end
 end
