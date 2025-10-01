@@ -3,6 +3,9 @@ defmodule FunPark.Ride do
 
   require FunPark.Macros
   import FunPark.Predicate
+  import FunPark.Utils
+
+  alias FunPark.Patron
 
   defstruct [
     :id,
@@ -46,6 +49,19 @@ defmodule FunPark.Ride do
 
   def long_wait?(%__MODULE__{wait_time: wait_time}), do: wait_time > 30
 
+  def tall_enough?(%Patron{} = patron, %__MODULE__{} = ride),
+    do: Patron.get_height(patron) >= ride.min_height
+
+  def old_enough?(%Patron{} = patron, %__MODULE__{} = ride),
+    do: Patron.get_age(patron) >= ride.min_age
+
   def suggested?(%__MODULE__{} = ride),
     do: p_all([&online?/1, p_not(&long_wait?/1)]).(ride)
+
+  def suggested?(%Patron{} = patron, %__MODULE__{} = ride) do
+    p_all([&suggested?/1, curry(&eligible?/2).(patron)]).(ride)
+  end
+
+  def eligible?(%Patron{} = patron, %__MODULE__{} = ride),
+    do: p_all([curry(&tall_enough?/2).(patron), curry(&old_enough?/2).(patron)]).(ride)
 end

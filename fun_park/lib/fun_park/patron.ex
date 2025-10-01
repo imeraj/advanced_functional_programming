@@ -53,6 +53,9 @@ defmodule FunPark.Patron do
 
   FunPark.Macros.ord_for(FunPark.Patron, :name)
 
+  def get_height(%__MODULE__{height: height}), do: height
+  def get_age(%__MODULE__{age: age}), do: age
+
   defp tier_priority(:basic), do: 1
   defp tier_priority(:premium), do: 2
   defp tier_priority(:vip), do: 3

@@ -2,15 +2,15 @@ defmodule FunPark.Predicate do
   import FunPark.Monoid.Utils, only: [m_append: 3, m_concat: 2]
   alias FunPark.Monoid.{PredAll, PredAny}
 
-  def p_all(pred1, pred2) when is_function(pred1, 1) and is_function(pred2, 1) do
+  def p_all(pred1, pred2) when is_function(pred1) and is_function(pred2) do
     m_append(%PredAll{}, pred1, pred2)
   end
 
-  def p_any(pred1, pred2) when is_function(pred1, 1) and is_function(pred2, 1) do
+  def p_any(pred1, pred2) when is_function(pred1) and is_function(pred2) do
     m_append(%PredAny{}, pred1, pred2)
   end
 
-  def p_not(pred) when is_function(pred, 1) do
+  def p_not(pred) when is_function(pred) do
     fn value -> not pred.(value) end
   end
 
