@@ -26,3 +26,16 @@ defmodule FunPark.Predicate do
     p_not(m_concat(%PredAny{}, p_list))
   end
 end
+
+defimpl FunPark.Foldable, for: Function do
+  def fold_l(predicate, true_func, false_func) do
+    case predicate.() do
+      true -> true_func.()
+      false -> false_func.()
+    end
+  end
+
+  def fold_r(predicate, true_func, false_func) do
+    fold_l(predicate, true_func, false_func)
+  end
+end
