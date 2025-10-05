@@ -40,6 +40,10 @@ defmodule FunPark.FastPass do
     Eq.Utils.concat_any([Eq, eq_ride_and_time()])
   end
 
+  def valid?(%__MODULE__{} = fast_pass, %Ride{} = ride) do
+    Eq.Utils.eq?(get_ride(fast_pass), ride)
+  end
+
   defimpl FunPark.Eq, for: FunPark.FastPass do
     alias FunPark.Eq
     alias FunPark.FastPass

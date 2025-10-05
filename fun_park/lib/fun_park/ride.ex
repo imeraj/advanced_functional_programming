@@ -2,10 +2,13 @@ defmodule FunPark.Ride do
   @moduledoc false
 
   require FunPark.Macros
+
   import FunPark.Predicate
   import FunPark.Utils
+  import FunPark.Predicate
 
   alias FunPark.Patron
+  alias FunPark.FastPass
 
   defstruct [
     :id,
@@ -67,5 +70,19 @@ defmodule FunPark.Ride do
 
   def suggested_rides(%Patron{} = patron, rides) when is_list(rides) do
     Enum.filter(rides, &suggested?(patron, &1))
+  end
+
+  def fast_pass?(%Patron{} = patron, %__MODULE__{} = ride) do
+    patron
+    |> Patron.get_fast_passes()
+    |> Enum.any?(&FastPass.valid?(&1, ride))
+  end
+
+  def fast_pass_lane?(%Patron{} = patron, %__MODULE__{} = ride) do
+    is_eligible = curry_r(&eligible?/2).(ride)
+    has_fast_pass = curry_r(&fast_pass?/2).(ride)
+    is_vip = &Patron.vip?/1
+
+    p_all([is_eligible, p_any([has_fast_pass, is_vip])]).(patron)
   end
 end

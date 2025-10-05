@@ -5,6 +5,7 @@ defmodule FunPark.Patron do
 
   import FunPark.Monoid.Utils, only: [m_concat: 2]
 
+  alias FunPark.List
   alias FunPark.Monoid.Max
   alias FunPark.Ord.Utils
 
@@ -83,6 +84,9 @@ defmodule FunPark.Patron do
     ])
   end
 
+  def vip?(%__MODULE__{ticket_tier: :vip}), do: true
+  def vip?(_), do: false
+
   def priority_empty do
     %__MODULE__{reward_points: Float.min_finite(), ticket_tier: nil}
   end
@@ -93,5 +97,20 @@ defmodule FunPark.Patron do
 
   def highest_priority(patrons) when is_list(patrons) do
     m_concat(max_priority_monoid(), patrons)
+  end
+
+  def get_fast_passes(%__MODULE__{fast_passes: fast_passes}),
+    do: fast_passes
+
+  def add_fast_pass(%__MODULE__{} = patron, fast_pass) do
+    fast_passes = List.union([fast_pass], get_fast_passes(patron))
+
+    change(patron, %{fast_passes: fast_passes})
+  end
+
+  def remove_fast_pass(%__MODULE__{} = patron, fast_pass) do
+    fast_passes = List.difference(get_fast_passes(patron), [fast_pass])
+
+    change(patron, %{fast_passes: fast_passes})
   end
 end

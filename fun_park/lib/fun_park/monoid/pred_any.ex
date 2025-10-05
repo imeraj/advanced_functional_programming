@@ -11,7 +11,7 @@ defimpl FunPark.Monoid, for: FunPark.Monoid.PredAny do
 
   def append(%PredAny{} = p1, %PredAny{} = p2) do
     %PredAny{
-      value: fn value -> p1.value.(value) and p2.value.(value) end
+      value: fn value -> p1.value.(value) or p2.value.(value) end
     }
   end
 
