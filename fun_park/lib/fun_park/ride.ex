@@ -9,6 +9,7 @@ defmodule FunPark.Ride do
 
   alias FunPark.Patron
   alias FunPark.FastPass
+  alias FunPark.Math
 
   defstruct [
     :id,
@@ -84,5 +85,10 @@ defmodule FunPark.Ride do
     is_vip = &Patron.vip?/1
 
     p_all([is_eligible, p_any([has_fast_pass, is_vip])]).(patron)
+  end
+
+  def add_wait_time(%__MODULE__{wait_time: wait_time} = ride, minutes)
+      when is_number(minutes) and minutes > 0 do
+    change(ride, %{wait_time: Math.sum(wait_time, minutes)})
   end
 end

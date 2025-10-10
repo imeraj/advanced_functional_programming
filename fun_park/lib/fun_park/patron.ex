@@ -5,6 +5,7 @@ defmodule FunPark.Patron do
 
   import FunPark.Monoid.Utils, only: [m_concat: 2]
 
+  alias FunPark.Math
   alias FunPark.List
   alias FunPark.Monoid.Max
   alias FunPark.Ord.Utils
@@ -112,5 +113,11 @@ defmodule FunPark.Patron do
     fast_passes = List.difference(get_fast_passes(patron), [fast_pass])
 
     change(patron, %{fast_passes: fast_passes})
+  end
+
+  def promotion(%__MODULE__{} = patron, points) do
+    new_points = Math.sum(get_reward_points(patron), points)
+
+    change(patron, %{reward_points: new_points})
   end
 end
