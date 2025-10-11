@@ -10,6 +10,7 @@ defmodule FunPark.Ride do
   alias FunPark.Patron
   alias FunPark.FastPass
   alias FunPark.Math
+  alias FunPark.Monad.Reader
 
   defstruct [
     :id,
@@ -31,6 +32,16 @@ defmodule FunPark.Ride do
       online: Keyword.get(opts, :online, true),
       tags: Keyword.get(opts, :tags, [])
     }
+  end
+
+  def new_from_env(name) do
+    Reader.asks(fn config ->
+      new(name)
+      |> change(%{
+        min_age: Map.get(config, :min_age, 0),
+        min_height: Map.get(config, :min_height, 0)
+      })
+    end)
   end
 
   def change(%__MODULE__{} = ride, attrs) when is_map(attrs) do
