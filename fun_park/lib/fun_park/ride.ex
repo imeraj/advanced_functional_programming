@@ -11,6 +11,7 @@ defmodule FunPark.Ride do
   alias FunPark.FastPass
   alias FunPark.Math
   alias FunPark.Monad.Reader
+  alias FunPark.Monad.Maybe
 
   defstruct [
     :id,
@@ -88,6 +89,14 @@ defmodule FunPark.Ride do
     patron
     |> Patron.get_fast_passes()
     |> Enum.any?(&FastPass.valid?(&1, ride))
+  end
+
+  def get_fast_pass(%Patron{} = patron, %__MODULE__{} = ride) do
+    Enum.find(
+      Patron.get_fast_passes(patron),
+      &FastPass.valid?(&1, ride)
+    )
+    |> Maybe.from_nil()
   end
 
   def fast_pass_lane?(%Patron{} = patron, %__MODULE__{} = ride) do
