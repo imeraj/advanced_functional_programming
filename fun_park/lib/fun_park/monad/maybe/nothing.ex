@@ -21,3 +21,20 @@ defimpl FunPark.Eq, for: FunPark.Monad.Maybe.Nothing do
   def not_eq?(%Nothing{}, %Nothing{}), do: false
   def not_eq?(%Nothing{}, %Just{}), do: true
 end
+
+defimpl FunPark.Ord, for: FunPark.Monad.Maybe.Nothing do
+  alias FunPark.Monad.Maybe.Just
+  alias FunPark.Monad.Maybe.Nothing
+
+  def lt?(%Nothing{}, %Just{}), do: true
+  def lt?(%Nothing{}, %Nothing{}), do: false
+
+  def le?(%Nothing{}, %Just{}), do: true
+  def le?(%Nothing{}, %Nothing{}), do: false
+
+  def gt?(%Nothing{}, %Just{}), do: false
+  def gt?(%Nothing{}, %Nothing{}), do: true
+
+  def ge?(%Nothing{}, %Just{}), do: false
+  def ge?(%Nothing{}, %Nothing{}), do: true
+end

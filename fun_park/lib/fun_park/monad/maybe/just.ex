@@ -24,3 +24,21 @@ defimpl FunPark.Eq, for: FunPark.Monad.Maybe.Just do
   def not_eq?(%Just{value: v1}, %Just{value: v2}), do: not Eq.eq?(v1, v2)
   def not_eq?(%Just{}, %Nothing{}), do: true
 end
+
+defimpl FunPark.Ord, for: FunPark.Monad.Maybe.Just do
+  alias FunPark.Ord
+  alias FunPark.Monad.Maybe.Just
+  alias FunPark.Monad.Maybe.Nothing
+
+  def lt?(%Just{value: v1}, %Just{value: v2}), do: Ord.lt?(v1, v2)
+  def lt?(%Just{}, %Nothing{}), do: false
+
+  def le?(%Just{value: v1}, %Just{value: v2}), do: Ord.le?(v1, v2)
+  def le?(%Just{}, %Nothing{}), do: false
+
+  def gt?(%Just{value: v1}, %Just{value: v2}), do: Ord.gt?(v1, v2)
+  def gt?(%Just{}, %Nothing{}), do: true
+
+  def ge?(%Just{value: v1}, %Just{value: v2}), do: Ord.ge?(v1, v2)
+  def ge?(%Just{}, %Nothing{}), do: true
+end
